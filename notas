@@ -1,0 +1,47 @@
+##Postgres
+# pip install psycopg2 
+
+##Para obtener el query en sql
+##str(operacion.query)
+
+##between
+##pr=Libros.objects.filter(precio__range(10,50))
+
+from recetas.models import Autor,Receta,Comentario
+##1st way to create new data
+a=Autor(nombre='José Arcos',email='jose.arcos@tecsup.edu.pe')
+a.save()
+Autor.objects.all()
+
+primer=Autor.objects.get(pk=1)
+##Second way to create new data
+r1=Receta.objects.create(titulo='Huevo frito',ingredientes='huevo, sal, aceite',preparacion='Calentar la sartén, etc.',autor=primer)
+Receta.objects.all()
+
+
+r2=Receta.objects.create(titulo='Agua hervida',ingredientes='agua',preparacion='Poner la tetera en la hornilla, etc.',autor=primer)
+Receta.objects.all()
+
+Receta.objects.exclude(ingredientes__startswith='A')
+Receta.objects.exclude(ingredientes__startswith='a') 
+Receta.objects.exclude(ingredientes__endswith='o')   
+Receta.objects.filter(preparacion__contains='tetera') 
+Receta.objects.all().order_by('titulo')              
+Receta.objects.all().order_by('titulo').reverse()
+
+
+Comentario.objects.filter(receta=r1)
+Comentario.objects.filter(receta=r2)
+Receta.objects.filter(titulo='Huevo frito').update(titulo='Huevito frito')   
+Receta.objects.all()
+c2=Comentario.objects.create(receta=r1,texto='Para pasar el hambre')
+Comentario.objects.filter(receta=r1).count()
+Comentario.objects.filter(receta=r2).count()
+c3=Comentario.objects.create(receta=r2,texto='Receta sin sentido')
+Comentario.objects.filter(receta=r2)
+c3.delete()
+Comentario.objects.filter(receta=r2)
+
+Receta.objects.get(titulo='Agua hervida').autor.nombre
+Receta.objects.get(titulo='Agua hervida').autor.email
+
